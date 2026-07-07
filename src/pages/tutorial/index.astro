@@ -1,0 +1,41 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('tutorial')).sort((a, b) => a.data.urutan - b.data.urutan);
+---
+
+<Layout title="Tutorial" description="Panduan langkah demi langkah mengurus kewajiban pajak: NPWP, e-Filing, kode billing, dan lainnya.">
+  <section class="mx-auto max-w-6xl px-5 pb-10 pt-14 sm:px-8 sm:pt-20">
+    <span class="text-xs font-semibold uppercase tracking-wide text-emerald-strong">Panduan</span>
+    <h1 class="font-display mt-3 max-w-2xl text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+      Tutorial praktis, langkah demi langkah
+    </h1>
+    <p class="mt-5 max-w-xl text-lg text-ink-soft">
+      Dari bikin NPWP sampai lapor SPT Tahunan — dipandu urut supaya tidak
+      bingung harus mulai dari mana.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
+    <ol class="divide-y divide-line border-y border-line">
+      {entries.map((entry, i) => (
+        <li>
+          <a href={`/tutorial/${entry.id}`} class="group flex items-center gap-6 py-7 transition-colors hover:bg-paper-raised">
+            <span class="font-display shrink-0 text-3xl font-semibold text-line group-hover:text-emerald-strong">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div class="flex-1">
+              <h2 class="font-display text-xl font-semibold text-ink">{entry.data.title}</h2>
+              <p class="mt-1.5 text-sm leading-relaxed text-ink-soft">{entry.data.excerpt}</p>
+              <p class="mt-2 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                {entry.data.langkah} langkah · {entry.data.durasi}
+              </p>
+            </div>
+            <span class="hidden shrink-0 text-emerald-strong transition-transform group-hover:translate-x-1 sm:block" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Layout>
