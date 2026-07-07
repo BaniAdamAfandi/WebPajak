@@ -1,0 +1,144 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const lembaga = [
+  {
+    nama: 'Direktorat Jenderal Pajak (DJP)',
+    naungan: 'Kementerian Keuangan RI',
+    tugas: 'Mengelola pajak pusat: PPh, PPN, PPnBM, Bea Meterai. Menerbitkan NPWP, mengelola sistem Coretax, dan menerima pelaporan SPT.',
+  },
+  {
+    nama: 'Direktorat Jenderal Bea dan Cukai (DJBC)',
+    naungan: 'Kementerian Keuangan RI',
+    tugas: 'Mengelola bea masuk, bea keluar, dan cukai (rokok, alkohol, dsb) — beda jalur dari pajak yang dikelola DJP.',
+  },
+  {
+    nama: 'Badan/Dinas Pendapatan Daerah',
+    naungan: 'Pemerintah Provinsi/Kab/Kota',
+    tugas: 'Mengelola pajak daerah: PBB perkotaan, pajak kendaraan, restoran, hotel, hiburan, dan reklame.',
+  },
+];
+
+const timeline = [
+  { tahun: '1983', judul: 'Reformasi Pajak I', desc: 'Indonesia beralih ke sistem self-assessment lewat UU PPh dan UU PPN pertama.' },
+  { tahun: '2007', judul: 'UU KUP', desc: 'UU No. 28/2007 menata ulang ketentuan umum dan tata cara perpajakan modern.' },
+  { tahun: '2021', judul: 'UU HPP', desc: 'Harmonisasi besar: tarif PPN naik bertahap, lapisan PPh 21 baru, skema UMKM diperjelas.' },
+  { tahun: '2024–2025', judul: 'Coretax & PPN 12% Barang Mewah', desc: 'Sistem inti administrasi perpajakan (Coretax) diluncurkan; PPN 12% dikhususkan untuk barang mewah.' },
+];
+
+const pelaporan = [
+  { jenis: 'SPT Masa PPh 21', jatuhTempo: 'Maks. tanggal 10 bulan berikutnya', pihak: 'Pemberi kerja/pemotong' },
+  { jenis: 'SPT Masa PPN', jatuhTempo: 'Akhir bulan berikutnya', pihak: 'Pengusaha Kena Pajak (PKP)' },
+  { jenis: 'SPT Tahunan Orang Pribadi', jatuhTempo: '31 Maret tahun berikutnya', pihak: 'Setiap wajib pajak orang pribadi' },
+  { jenis: 'SPT Tahunan Badan', jatuhTempo: '30 April tahun berikutnya', pihak: 'PT, CV, dan bentuk badan usaha lain' },
+];
+---
+
+<Layout title="Pajak di Indonesia" description="Peta sistem perpajakan Indonesia: lembaga pengelola, jenis pajak, sejarah reformasi, dan kalender pelaporan.">
+  <section class="mx-auto max-w-6xl px-5 pb-10 pt-14 sm:px-8 sm:pt-20">
+    <span class="text-xs font-semibold uppercase tracking-wide text-emerald-strong">Referensi</span>
+    <h1 class="font-display mt-3 max-w-2xl text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+      Bagaimana sistem pajak Indonesia bekerja
+    </h1>
+    <p class="mt-5 max-w-xl text-lg text-ink-soft">
+      Satu halaman ringkas untuk memahami siapa mengelola apa, dari mana
+      sebagian besar pendapatan negara berasal, dan kapan kewajiban pelaporan
+      jatuh tempo.
+    </p>
+  </section>
+
+  <!-- APBN stat -->
+  <section class="border-y border-line bg-paper-raised">
+    <div class="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 md:grid-cols-[0.8fr_1.2fr] md:items-center">
+      <div>
+        <p class="font-display text-6xl font-semibold text-emerald-strong">~75%</p>
+        <p class="mt-2 max-w-xs text-sm text-ink-soft">
+          Kontribusi penerimaan pajak terhadap total pendapatan negara dalam
+          APBN, sisanya dari Penerimaan Negara Bukan Pajak (PNBP) dan hibah.
+        </p>
+      </div>
+      <p class="text-ink-soft leading-relaxed md:border-l md:border-line md:pl-8">
+        Karena porsinya sebesar ini, kebijakan pajak — naik-turun tarif,
+        insentif UMKM, sampai digitalisasi lewat Coretax — punya efek langsung
+        ke kemampuan negara membiayai layanan publik: pendidikan, kesehatan,
+        infrastruktur, hingga subsidi.
+      </p>
+    </div>
+  </section>
+
+  <!-- Lembaga -->
+  <section class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+    <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Siapa mengelola pajak?</h2>
+    <div class="mt-10 divide-y divide-line border-y border-line">
+      {lembaga.map((l) => (
+        <div class="grid gap-2 py-7 md:grid-cols-[1fr_2fr] md:gap-8">
+          <div>
+            <h3 class="font-display text-lg font-semibold text-ink">{l.nama}</h3>
+            <p class="mt-1 text-xs font-semibold uppercase tracking-wide text-ink-soft">{l.naungan}</p>
+          </div>
+          <p class="text-ink-soft leading-relaxed">{l.tugas}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="border-y border-line bg-paper-raised">
+    <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Sejarah singkat reformasi pajak</h2>
+      <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        {timeline.map((t) => (
+          <div class="border-t-2 border-emerald pt-4">
+            <p class="font-display text-xl font-semibold text-ink">{t.tahun}</p>
+            <p class="mt-1 text-sm font-semibold text-ink">{t.judul}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-soft">{t.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Kalender pelaporan -->
+  <section class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+    <h2 class="font-display text-3xl font-semibold tracking-tight text-ink">Kalender pelaporan pajak</h2>
+    <p class="mt-3 max-w-xl text-ink-soft">
+      Ringkasan jenis Surat Pemberitahuan (SPT) yang paling umum dan kapan
+      jatuh temponya.
+    </p>
+
+    <div class="mt-8 overflow-x-auto rounded-2xl border border-line">
+      <table class="w-full min-w-[560px] text-left text-sm">
+        <thead class="bg-paper-raised text-xs font-semibold uppercase tracking-wide text-ink-soft">
+          <tr>
+            <th class="px-5 py-3.5">Jenis SPT</th>
+            <th class="px-5 py-3.5">Jatuh tempo</th>
+            <th class="px-5 py-3.5">Wajib lapor</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-line">
+          {pelaporan.map((p) => (
+            <tr>
+              <td class="px-5 py-4 font-medium text-ink">{p.jenis}</td>
+              <td class="px-5 py-4 text-ink-soft">{p.jatuhTempo}</td>
+              <td class="px-5 py-4 text-ink-soft">{p.pihak}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
+    <div class="grid gap-5 rounded-[2rem] border border-line bg-paper-raised p-8 sm:grid-cols-3 sm:p-10">
+      <div class="sm:col-span-2">
+        <h2 class="font-display text-2xl font-semibold text-ink">Sudah paham gambaran besarnya?</h2>
+        <p class="mt-2 text-ink-soft">Lanjutkan ke materi mendalam atau langsung uji lewat kalkulator dan kuis.</p>
+      </div>
+      <div class="flex flex-col justify-center gap-3">
+        <a href="/materi" class="rounded-full bg-emerald px-5 py-3 text-center text-sm font-semibold text-paper">Lihat semua materi</a>
+        <a href="/kalkulator" class="rounded-full border border-line px-5 py-3 text-center text-sm font-semibold text-ink">Coba kalkulator</a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,202 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const stats = [
+  { value: '11', label: 'Jenis pajak dijelaskan dari nol' },
+  { value: '13', label: 'Materi & tutorial siap belajar' },
+  { value: 'Gratis', label: 'Untuk pelajar & masyarakat umum' },
+];
+
+const features = [
+  {
+    href: '/materi',
+    tag: 'Materi',
+    title: 'Belajar pajak dari dasar, bukan dari pusing',
+    body: 'Modul singkat tentang PPh, PPN, PBB, sampai pajak UMKM — ditulis ulang tanpa istilah rumit, cocok untuk pelajar dan masyarakat umum.',
+  },
+  {
+    href: '/pajak-indonesia',
+    tag: 'Referensi',
+    title: 'Peta sistem perpajakan Indonesia',
+    body: 'Satu halaman ringkas: siapa yang wajib bayar, lembaga mana yang mengelola, dan bagaimana uang pajak kembali ke masyarakat.',
+  },
+  {
+    href: '/kalkulator',
+    tag: 'Alat bantu',
+    title: 'Kalkulator estimasi PPh 21',
+    body: 'Masukkan gaji dan status PTKP, langsung lihat estimasi pajak penghasilan tahunan — lengkap dengan rincian tiap lapisan tarif.',
+  },
+  {
+    href: '/kuis',
+    tag: 'Latihan',
+    title: 'Kuis interaktif dengan skor',
+    body: 'Uji pemahaman lewat soal pilihan ganda seputar istilah dan aturan pajak, cocok dipakai guru sebagai kuis kelas.',
+  },
+  {
+    href: '/tutorial',
+    tag: 'Panduan',
+    title: 'Tutorial langkah demi langkah',
+    body: 'Cara bikin NPWP, lapor SPT Tahunan lewat e-Filing, sampai kenali bukti potong — dipandu urut per langkah.',
+  },
+];
+
+const audiences = [
+  {
+    title: 'Untuk masyarakat umum',
+    body: 'Pahami kewajiban pajakmu sebagai karyawan, pekerja lepas, atau pelaku UMKM — tanpa perlu latar belakang akuntansi.',
+    points: ['Estimasi pajak penghasilan sendiri', 'Panduan NPWP & e-Filing', 'Bahasa yang jelas, bukan bahasa hukum'],
+  },
+  {
+    title: 'Untuk sekolah & pengajar',
+    body: 'Modul siap pakai untuk memperkenalkan literasi pajak ke siswa, lengkap dengan kuis yang bisa dipakai sebagai evaluasi kelas.',
+    points: ['Materi berjenjang: pemula → lanjutan', 'Kuis dengan pembahasan jawaban', 'Gratis, tanpa akun atau instalasi'],
+  },
+];
+---
+
+<Layout title="Beranda">
+  <!-- Hero -->
+  <section class="mx-auto max-w-6xl px-5 pb-16 pt-14 sm:px-8 sm:pt-20 lg:pb-24">
+    <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-8">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-line bg-paper-raised px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wide text-emerald-strong">
+          Literasi pajak untuk semua
+        </span>
+        <h1 class="font-display mt-6 text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
+          Pajak nggak harus
+          <span class="italic text-emerald-strong">bikin pusing.</span>
+        </h1>
+        <p class="mt-6 max-w-lg text-lg leading-relaxed text-ink-soft">
+          Pajakademi bantu masyarakat dan pelajar Indonesia memahami pajak lewat
+          materi ringkas, kalkulator PPh 21, kuis interaktif, dan tutorial
+          langkah demi langkah — semua gratis.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a
+            href="/kalkulator"
+            class="rounded-full bg-emerald px-6 py-3.5 text-sm font-semibold text-paper shadow-[0_10px_30px_-12px_rgba(14,107,79,0.55)] transition-transform hover:-translate-y-0.5"
+          >
+            Hitung Estimasi Pajakmu
+          </a>
+          <a
+            href="/materi"
+            class="rounded-full px-6 py-3.5 text-sm font-semibold text-ink underline decoration-line decoration-2 underline-offset-8 transition-colors hover:decoration-emerald"
+          >
+            Jelajahi Materi →
+          </a>
+        </div>
+
+        <dl class="mt-14 grid grid-cols-3 gap-6 border-t border-line pt-8">
+          {stats.map((stat) => (
+            <div>
+              <dt class="font-display text-2xl font-semibold text-ink sm:text-3xl">{stat.value}</dt>
+              <dd class="mt-1 text-xs leading-snug text-ink-soft sm:text-sm">{stat.label}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div class="relative lg:justify-self-end">
+        <div class="absolute -inset-x-6 -inset-y-10 -z-10 hidden rounded-[3rem] bg-emerald-tint blur-2xl lg:block"></div>
+
+        <div class="mx-auto w-full max-w-sm rounded-[1.75rem] border border-line bg-paper-raised p-6 shadow-[0_30px_60px_-30px_rgba(20,23,28,0.35)] sm:p-8">
+          <p class="text-xs font-semibold uppercase tracking-wide text-ink-soft">Estimasi PPh 21 / tahun</p>
+          <p class="font-display mt-3 text-4xl font-semibold text-ink">Rp 4.350.000</p>
+          <p class="mt-1 text-xs text-ink-soft">dari penghasilan kena pajak Rp 87.000.000</p>
+
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center justify-between rounded-xl bg-paper px-4 py-3 text-sm">
+              <span class="text-ink-soft">Lapisan 5% · s.d. Rp60jt</span>
+              <span class="font-medium text-ink">Rp 3.000.000</span>
+            </div>
+            <div class="flex items-center justify-between rounded-xl bg-paper px-4 py-3 text-sm">
+              <span class="text-ink-soft">Lapisan 15% · sisanya</span>
+              <span class="font-medium text-ink">Rp 1.350.000</span>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center gap-2 rounded-xl bg-emerald-tint px-4 py-3 text-xs font-medium text-emerald-strong">
+            <span aria-hidden="true">✓</span>
+            Tarif progresif Pasal 17 UU HPP
+          </div>
+        </div>
+
+        <div class="absolute -left-6 -top-6 hidden rotate-[-6deg] rounded-2xl border border-line bg-paper px-4 py-3 text-xs font-semibold text-ink shadow-lg sm:block">
+          🎓 Dipakai untuk kelas literasi pajak
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="border-y border-line bg-paper-raised">
+    <div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+      <div class="max-w-xl">
+        <span class="text-xs font-semibold uppercase tracking-wide text-emerald-strong">Semua dalam satu tempat</span>
+        <h2 class="font-display mt-3 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+          Belajar, hitung, dan uji pemahamanmu
+        </h2>
+      </div>
+
+      <div class="mt-12 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((feature, i) => (
+          <a
+            href={feature.href}
+            class:list={[
+              'group flex flex-col justify-between bg-paper p-7 transition-colors hover:bg-paper-raised sm:p-8',
+              i === features.length - 1 && 'sm:col-span-2',
+            ]}
+          >
+            <div>
+              <span class="text-xs font-semibold uppercase tracking-wide text-ink-soft">{feature.tag}</span>
+              <h3 class="font-display mt-3 text-xl font-semibold leading-snug text-ink">{feature.title}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-ink-soft">{feature.body}</p>
+            </div>
+            <span class="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-strong">
+              Buka
+              <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Audiences -->
+  <section class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+      {audiences.map((aud) => (
+        <div>
+          <h3 class="font-display text-2xl font-semibold tracking-tight text-ink">{aud.title}</h3>
+          <p class="mt-3 text-ink-soft leading-relaxed">{aud.body}</p>
+          <ul class="mt-6 space-y-3">
+            {aud.points.map((point) => (
+              <li class="flex items-start gap-3 text-sm text-ink">
+                <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-tint text-[10px] font-bold text-emerald-strong" aria-hidden="true">✓</span>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mx-auto max-w-6xl px-5 pb-20 sm:px-8 sm:pb-28">
+    <div class="rounded-[2rem] bg-ink px-8 py-14 text-center sm:px-16">
+      <h2 class="font-display text-3xl font-semibold tracking-tight text-paper sm:text-4xl">
+        Siap uji seberapa paham kamu soal pajak?
+      </h2>
+      <p class="mx-auto mt-4 max-w-md text-paper/70">
+        Kuis singkat, 10 soal, langsung dapat pembahasan tiap jawaban.
+      </p>
+      <a
+        href="/kuis"
+        class="mt-8 inline-flex items-center gap-2 rounded-full bg-paper px-7 py-3.5 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5"
+      >
+        Mulai Kuis Sekarang →
+      </a>
+    </div>
+  </section>
+</Layout>

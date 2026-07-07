@@ -1,0 +1,217 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const ptkpOptions = [
+  { value: '54000000', label: 'TK/0 — Belum kawin, tanpa tanggungan' },
+  { value: '58500000', label: 'TK/1 — Belum kawin, 1 tanggungan' },
+  { value: '63000000', label: 'TK/2 — Belum kawin, 2 tanggungan' },
+  { value: '67500000', label: 'TK/3 — Belum kawin, 3 tanggungan' },
+  { value: '58500000', label: 'K/0 — Kawin, tanpa tanggungan' },
+  { value: '63000000', label: 'K/1 — Kawin, 1 tanggungan' },
+  { value: '67500000', label: 'K/2 — Kawin, 2 tanggungan' },
+  { value: '72000000', label: 'K/3 — Kawin, 3 tanggungan' },
+];
+---
+
+<Layout title="Kalkulator Pajak" description="Estimasi PPh 21 tahunan berdasarkan gaji dan status PTKP, lengkap dengan rincian tarif progresif.">
+  <section class="mx-auto max-w-6xl px-5 pb-10 pt-14 sm:px-8 sm:pt-20">
+    <span class="text-xs font-semibold uppercase tracking-wide text-emerald-strong">Alat bantu</span>
+    <h1 class="font-display mt-3 max-w-2xl text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+      Kalkulator Estimasi PPh 21
+    </h1>
+    <p class="mt-5 max-w-xl text-lg text-ink-soft">
+      Masukkan gaji dan status PTKP-mu untuk melihat estimasi pajak penghasilan
+      tahunan beserta rincian tiap lapisan tarif progresif.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
+    <div class="grid gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+      <!-- Form -->
+      <form id="calc-form" class="space-y-6 rounded-3xl border border-line bg-paper-raised p-6 sm:p-8">
+        <div>
+          <label for="gaji" class="block text-sm font-semibold text-ink">Gaji bruto per bulan</label>
+          <div class="mt-2 flex items-center rounded-xl border border-line bg-paper px-4 focus-within:border-emerald">
+            <span class="text-sm text-ink-soft">Rp</span>
+            <input
+              id="gaji"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              step="100000"
+              placeholder="8.000.000"
+              class="w-full bg-transparent px-2 py-3 text-sm text-ink outline-none"
+              value="8000000"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="tunjangan" class="block text-sm font-semibold text-ink">
+            Bonus / THR tambahan per tahun <span class="font-normal text-ink-soft">(opsional)</span>
+          </label>
+          <div class="mt-2 flex items-center rounded-xl border border-line bg-paper px-4 focus-within:border-emerald">
+            <span class="text-sm text-ink-soft">Rp</span>
+            <input
+              id="tunjangan"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              step="100000"
+              placeholder="0"
+              class="w-full bg-transparent px-2 py-3 text-sm text-ink outline-none"
+              value="0"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="pensiun" class="block text-sm font-semibold text-ink">
+            Iuran pensiun/JHT dibayar sendiri per bulan <span class="font-normal text-ink-soft">(opsional)</span>
+          </label>
+          <div class="mt-2 flex items-center rounded-xl border border-line bg-paper px-4 focus-within:border-emerald">
+            <span class="text-sm text-ink-soft">Rp</span>
+            <input
+              id="pensiun"
+              type="number"
+              inputmode="numeric"
+              min="0"
+              step="10000"
+              placeholder="0"
+              class="w-full bg-transparent px-2 py-3 text-sm text-ink outline-none"
+              value="0"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label for="ptkp" class="block text-sm font-semibold text-ink">Status PTKP</label>
+          <select
+            id="ptkp"
+            class="mt-2 w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm text-ink outline-none focus:border-emerald"
+          >
+            {ptkpOptions.map((opt, i) => (
+              <option value={opt.value} selected={i === 0}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
+      </form>
+
+      <!-- Result -->
+      <div class="rounded-3xl border border-line bg-paper p-6 sm:p-8">
+        <p class="text-xs font-semibold uppercase tracking-wide text-ink-soft">Estimasi PPh 21 per tahun</p>
+        <p id="out-pajak-tahunan" class="font-display mt-2 text-4xl font-semibold text-ink sm:text-5xl">Rp 0</p>
+        <p class="mt-1 text-sm text-ink-soft">≈ <span id="out-pajak-bulanan">Rp 0</span> / bulan</p>
+
+        <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-line pt-6 text-sm">
+          <div>
+            <dt class="text-ink-soft">Penghasilan neto/tahun</dt>
+            <dd id="out-neto" class="mt-1 font-semibold text-ink">Rp 0</dd>
+          </div>
+          <div>
+            <dt class="text-ink-soft">PTKP</dt>
+            <dd id="out-ptkp" class="mt-1 font-semibold text-ink">Rp 0</dd>
+          </div>
+          <div class="col-span-2">
+            <dt class="text-ink-soft">Penghasilan Kena Pajak (PKP)</dt>
+            <dd id="out-pkp" class="mt-1 font-semibold text-emerald-strong">Rp 0</dd>
+          </div>
+        </dl>
+
+        <div class="mt-6 border-t border-line pt-6">
+          <p class="text-sm font-semibold text-ink">Rincian per lapisan tarif</p>
+          <div id="out-breakdown" class="mt-3 space-y-2 text-sm"></div>
+          <p id="out-empty" class="mt-3 text-sm text-ink-soft">
+            Penghasilan di bawah PTKP — tidak ada PPh 21 terutang.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="mx-auto mt-8 max-w-3xl text-center text-xs leading-relaxed text-ink-soft">
+      Kalkulator ini menghitung estimasi tahunan yang disederhanakan (biaya
+      jabatan 5% maks. Rp6.000.000/tahun, tarif progresif Pasal 17 UU HPP) dan
+      ditujukan untuk tujuan edukasi. Pemotongan bulanan resmi oleh pemberi
+      kerja menggunakan metode TER (PMK 168/2023) yang hasilnya disesuaikan di
+      akhir tahun. Untuk kebutuhan pelaporan resmi, gunakan aplikasi Coretax
+      DJP atau konsultasikan ke konsultan pajak.
+    </p>
+  </section>
+</Layout>
+
+<script>
+  const brackets = [
+    { limit: 60_000_000, rate: 0.05 },
+    { limit: 250_000_000, rate: 0.15 },
+    { limit: 500_000_000, rate: 0.25 },
+    { limit: 5_000_000_000, rate: 0.3 },
+    { limit: Infinity, rate: 0.35 },
+  ];
+
+  const rupiah = (n: number) => `Rp ${Math.round(n).toLocaleString('id-ID')}`;
+
+  const gajiEl = document.getElementById('gaji') as HTMLInputElement;
+  const tunjanganEl = document.getElementById('tunjangan') as HTMLInputElement;
+  const pensiunEl = document.getElementById('pensiun') as HTMLInputElement;
+  const ptkpEl = document.getElementById('ptkp') as HTMLSelectElement;
+
+  const outNeto = document.getElementById('out-neto')!;
+  const outPtkp = document.getElementById('out-ptkp')!;
+  const outPkp = document.getElementById('out-pkp')!;
+  const outPajakTahunan = document.getElementById('out-pajak-tahunan')!;
+  const outPajakBulanan = document.getElementById('out-pajak-bulanan')!;
+  const outBreakdown = document.getElementById('out-breakdown')!;
+  const outEmpty = document.getElementById('out-empty')!;
+
+  function hitung() {
+    const gajiBulanan = Math.max(0, Number(gajiEl.value) || 0);
+    const tunjanganTahunan = Math.max(0, Number(tunjanganEl.value) || 0);
+    const pensiunBulanan = Math.max(0, Number(pensiunEl.value) || 0);
+    const ptkp = Number(ptkpEl.value);
+
+    const brutoTahunan = gajiBulanan * 12 + tunjanganTahunan;
+    const biayaJabatan = Math.min(brutoTahunan * 0.05, 6_000_000);
+    const iuranPensiunTahunan = pensiunBulanan * 12;
+    const neto = Math.max(0, brutoTahunan - biayaJabatan - iuranPensiunTahunan);
+    const pkp = Math.max(0, neto - ptkp);
+
+    outNeto.textContent = rupiah(neto);
+    outPtkp.textContent = rupiah(ptkp);
+    outPkp.textContent = rupiah(pkp);
+
+    let sisa = pkp;
+    let batasBawah = 0;
+    let totalPajak = 0;
+    const rows: string[] = [];
+
+    for (const b of brackets) {
+      if (sisa <= 0) break;
+      const lebarLapisan = b.limit - batasBawah;
+      const kena = Math.min(sisa, lebarLapisan);
+      if (kena > 0) {
+        const pajakLapisan = kena * b.rate;
+        totalPajak += pajakLapisan;
+        const labelBatas = b.limit === Infinity ? `di atas ${rupiah(batasBawah)}` : `s.d. ${rupiah(b.limit)}`;
+        rows.push(`
+          <div class="flex items-center justify-between rounded-xl bg-paper-raised px-4 py-3">
+            <span class="text-ink-soft">${b.rate * 100}% · ${labelBatas}</span>
+            <span class="font-medium text-ink">${rupiah(pajakLapisan)}</span>
+          </div>
+        `);
+      }
+      sisa -= kena;
+      batasBawah = b.limit;
+    }
+
+    outPajakTahunan.textContent = rupiah(totalPajak);
+    outPajakBulanan.textContent = rupiah(totalPajak / 12);
+    outBreakdown.innerHTML = rows.join('');
+
+    const hasBreakdown = rows.length > 0;
+    outBreakdown.classList.toggle('hidden', !hasBreakdown);
+    outEmpty.classList.toggle('hidden', hasBreakdown);
+  }
+
+  [gajiEl, tunjanganEl, pensiunEl, ptkpEl].forEach((el) => el.addEventListener('input', hitung));
+  hitung();
+</script>

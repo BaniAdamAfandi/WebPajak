@@ -1,0 +1,63 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const entries = (await getCollection('materi')).sort((a, b) => a.data.urutan - b.data.urutan);
+
+const kategoriLabel: Record<string, string> = {
+  dasar: 'Dasar',
+  pph: 'PPh',
+  ppn: 'PPN',
+  umkm: 'UMKM',
+  digital: 'Digital',
+};
+
+const tingkatStyle: Record<string, string> = {
+  Pemula: 'bg-emerald-tint text-emerald-strong',
+  Menengah: 'bg-amber-tint text-amber',
+  Lanjutan: 'bg-clay-tint text-clay',
+};
+---
+
+<Layout title="Materi" description="Materi pajak Indonesia yang ditulis ringkas dan mudah dipahami, dari dasar sampai lanjutan.">
+  <section class="mx-auto max-w-6xl px-5 pb-10 pt-14 sm:px-8 sm:pt-20">
+    <span class="text-xs font-semibold uppercase tracking-wide text-emerald-strong">Materi</span>
+    <h1 class="font-display mt-3 max-w-2xl text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+      Belajar pajak dari nol, tanpa istilah rumit
+    </h1>
+    <p class="mt-5 max-w-xl text-lg text-ink-soft">
+      {entries.length} modul singkat — mulai dari konsep dasar pajak sampai topik
+      yang lebih spesifik seperti PPN barang mewah dan pajak ekonomi digital.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 pb-24 sm:px-8">
+    <ul class="grid gap-5 sm:grid-cols-2">
+      {entries.map((entry) => (
+        <li>
+          <a
+            href={`/materi/${entry.id}`}
+            class="group flex h-full flex-col rounded-2xl border border-line bg-paper-raised p-6 transition-transform hover:-translate-y-1 hover:border-emerald"
+          >
+            <div class="flex items-center gap-2">
+              <span class="rounded-full bg-paper px-3 py-1 text-xs font-semibold text-ink-soft">
+                {kategoriLabel[entry.data.kategori]}
+              </span>
+              <span class:list={['rounded-full px-3 py-1 text-xs font-semibold', tingkatStyle[entry.data.tingkat]]}>
+                {entry.data.tingkat}
+              </span>
+            </div>
+            <h2 class="font-display mt-4 text-lg font-semibold leading-snug text-ink">{entry.data.title}</h2>
+            <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{entry.data.excerpt}</p>
+            <div class="mt-5 flex items-center justify-between text-sm">
+              <span class="text-ink-soft">{entry.data.durasi} baca</span>
+              <span class="font-semibold text-emerald-strong">
+                Baca <span class="transition-transform inline-block group-hover:translate-x-1" aria-hidden="true">→</span>
+              </span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>

@@ -1,0 +1,19 @@
+# build output
+dist/
+.vercel/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment
+.env
+.env.production
+
+# editor
+.vscode/
+.DS_Store
+package-lock.json
